@@ -17,11 +17,8 @@ class AuthService {
       throw new Error('User already exists');
     }
 
-    // Hash the password
-    const hashedPassword = await bcrypt.hash(password, 10);
-
     // Create the new user and save to the database
-    const newUser = this.userRepository.create({ name, email, password: hashedPassword });
+    const newUser = this.userRepository.create({ name, email, password: password });
     await this.userRepository.save(newUser);
 
     // Return the created user without the password field
@@ -40,6 +37,7 @@ class AuthService {
     }
 
     // Compare the provided password with the stored hash
+    console.log(password, user.password)
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
       throw new Error('Invalid credentials');

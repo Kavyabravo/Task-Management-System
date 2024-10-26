@@ -18,7 +18,7 @@ export const validateCreateTask = [
 
 // Validation rules for updating a task
 export const validateUpdateTask = [
-  param('id').isUUID().withMessage('Invalid task ID'),
+  param('id').isNumeric().withMessage('Invalid task ID'),
   body('title').isString().optional().withMessage('Title must be a string'),
   body('description').isString().optional().withMessage('Description must be a string'),
   body('dueDate').isISO8601().optional().withMessage('Due date must be a valid date'),

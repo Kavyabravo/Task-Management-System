@@ -40,6 +40,29 @@ class TaskController {
     }
     res.status(204).send();
   }
+
+  public async addComment(req: Request, res: Response): Promise<void> {
+    const { content } = req.body;
+    const taskId = +req.params.id
+    try {
+      const comment = await TaskService.addComment(taskId, content, (req as any).user.id);
+      res.status(201).json(comment);
+    } catch (error) {
+      res.status(500).json({ message: 'Internal Server Error' });
+    }
+  }
+
+  public async addAttachment(req: Request, res: Response): Promise<void> {
+    const taskId = +req.params.id
+    const filePath = "file path";
+
+    try {
+      const attachment = await TaskService.addAttachment(taskId, filePath);
+      res.status(201).json(attachment);
+    } catch (error) {
+      res.status(500).json({ message: 'Internal Server Error' });
+    }
+  }
 }
 
 export default new TaskController();

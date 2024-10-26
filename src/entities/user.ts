@@ -1,5 +1,8 @@
-import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, BeforeInsert } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, BeforeInsert, ManyToMany, OneToMany } from "typeorm";
 import bcrypt from "bcryptjs";
+import { Team } from './team';
+import { Task } from './task';
+import { Comment } from './comment';
 
 @Entity({ name: 'User', schema: 'task-management' })
 export class User extends BaseEntity {
@@ -14,6 +17,15 @@ export class User extends BaseEntity {
 
   @Column()
   password!: string;
+
+  @ManyToMany(() => Team, (team) => team.members)
+  teams!: Team[];
+
+  @ManyToMany(() => Task, (task) => task.assignees)
+  tasks!: Task[];
+
+  @OneToMany(() => Comment, (comment) => comment.task, { cascade: true })
+  comments!: Comment[];
 
   @BeforeInsert()
   async hashPassword() {
