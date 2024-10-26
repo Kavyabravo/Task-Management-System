@@ -2,6 +2,9 @@ import { DataSource } from 'typeorm';
 import dotenv from 'dotenv';
 import { User } from '../entities/user';
 import { Task } from '../entities/task';
+import { Team } from '../entities/team';
+import { Attachment } from '../entities/attachment';
+import { Comment } from '../entities/comment';
 
 dotenv.config();
 const AppDataSource = new DataSource({
@@ -13,7 +16,7 @@ const AppDataSource = new DataSource({
   database: process.env.PG_DATABASE,
   synchronize: true,
   logging: false,
-  entities: [User, Task],
+  entities: [User, Task, Team, Attachment, Comment],
 });
 
 export default AppDataSource;

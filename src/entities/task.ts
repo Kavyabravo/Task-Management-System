@@ -1,5 +1,7 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, BaseEntity } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, BaseEntity, ManyToMany, JoinTable, OneToMany } from "typeorm";
 import { User } from "./user";
+import { Attachment } from "./attachment";
+import { Comment } from "./comment";
 
 @Entity({ name: 'Task', schema: 'task-management' })
 export class Task extends BaseEntity {
@@ -18,8 +20,15 @@ export class Task extends BaseEntity {
   @Column({ default: 'open' })
   status!: 'open' | 'completed';
 
-  @ManyToOne(() => User, user => user.id)
-  assignedTo!: User;
+  @ManyToMany(() => User)
+  @JoinTable()
+  assignees!: User[];
+
+  @OneToMany(() => Comment, (comment) => comment.task, { cascade: true })
+  comments!: Comment[];
+
+  @OneToMany(() => Attachment, (attachment) => attachment.task, { cascade: true })
+  attachments!: Attachment[];
 
   @ManyToOne(() => User, user => user.id)
   createdBy!: User;
